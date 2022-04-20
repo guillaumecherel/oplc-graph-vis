@@ -61,6 +61,8 @@ export function skillGraphViz(
   const renderer = new Sigma(graph, container, {
     minCameraRatio: 0.1,
     maxCameraRatio: 10,
+    labelDensity: 1,
+    labelGridCellSize: 1,
     labelRenderedSizeThreshold: 0,
   });
 
