@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting Started</title>
+  </head>
+  <body>
+    <style>
+      html,
+      body,
+      #skill-graph-viz {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid black;
+      }
+      #controls {
+        position: absolute;
+        right: 1em;
+        top: 1em;
+        text-align: right;
+      }
+      button {
+        width: 2em;
+        height: 2em;
+        background-color: white;
+        border: 1px solid grey;
+        border-radius: 5px;
+      }
+    </style>
+    <div id="skill-graph-viz">
+    </div>
+    <div id="controls">
+      <button id="zoom-in" type="button">+</button>
+      <button id="zoom-out" type="button">-</button>
+    </div>
+    <script src="../dist/skill-graph-vis.js"></script>
+    <script>
+
+      const skills = {
+        "0": {
+          "name": "Communiquer à l'écrit et à l'oral en s'adaptant au contexte et à la cible"
+        },
+        "1": {
+          "name": "Prendre des décisions importantes"
+        },
+        "2": {
+          "name": "Développer et gérer des relations interpersonnelles"
+        },
+        "3": {
+          "name": "Travailler en équipe"
+        },
+        "4": {
+          "name": "Adapter sa pratique professionnelle et son comportement en fonction du contexte"
+        },
+        "5": {
+          "name": "Organiser et développer son réseau professionnel"
+        },
+        "6": {
+          "name": "Transmettre des informations, des documents"
+        },
+        "7": {
+          "name": "Mener un entretien, une interview, une audition"
+        },
+        "8": {
+          "name": "Mobiliser une équipe, faire preuve de leadership"
+        },
+        "9": {
+          "name": "Piloter un projet"
+        },
+        "10": {
+          "name": "Evaluer et développer les compétences d'un collaborateur"
+        },
+        "11": {
+          "name": "Favoriser, manager et mesurer la performance d'une équipe"
+        },
+        "12": {
+          "name": "Optimiser les effectifs, l'adéquation et l'allocation des ressources"
+        },
+        "13": {
+          "name": "Recruter une personne"
+        },
+        "14": {
+          "name": "Coordonner et organiser le travail d'équipe"
+        },
+        "15": {
+          "name": "Prévenir et résoudre les conflits"
+        },
+        "16": {
+          "name": "Faciliter et créer les conditions de la coopération"
+        },
+        "17": {
+          "name": "Animer un réseau, une communauté"
+        },
+        "18": {
+          "name": "Préparer et animer une réunion, un groupe de travail, un atelier"
+        },
+        "19": {
+          "name": "Coordonner l'intervention d'équipes pluridisciplinaires"
+        },
+        "20": {
+          "name": "Accompagner le changement"
+        },
+        "21": {
+          "name": "Organiser et mettre en œuvre des actions de communication interne"
+        },
+        "22": {
+          "name": "Concevoir et mettre en œuvre une démarche de gestion des emplois et des compétences"
+        },
+        "23": {
+          "name": "Gérer la mobilité et les parcours professionnels"
+        },
+        "24": {
+          "name": "Animer le dialogue social"
+        },
+        "25": {
+          "name": "Veiller à maintenir un climat social favorable"
+        },
+        "26": {
+          "name": "Organiser un plan social"
+        },
+        "27": {
+          "name": "Concevoir et piloter une politique de gestion des ressources humaines"
+        },
+        "28": {
+          "name": "Accueillir, orienter des personnes"
+        },
+        "29": {
+          "name": "Informer, renseigner une personne"
+        },
+        "30": {
+          "name": "Coacher une personne"
+        },
+        "31": {
+          "name": "Conseiller, accompagner une personne"
+        },
+        "32": {
+          "name": "Agir dans une relation de service"
+        },
+        "33": {
+          "name": "Identifier, traiter une demande client"
+        },
+        "34": {
+          "name": "Servir un client"
+        },
+        "35": {
+          "name": "Animer un débat public"
+        },
+        "36": {
+          "name": "Sensibiliser un public"
+        },
+        "37": {
+          "name": "Prévenir les risques psychosociaux"
+        },
+        "38": {
+          "name": "Réaliser un accompagnement psychologique"
+        },
+        "39": {
+          "name": "Organiser, réaliser des services d'aide à la personne"
+        },
+        "40": {
+          "name": "Accompagner le développement de l'autonomie d'une personne"
+        },
+        "41": {
+          "name": "Accompagner l'élaboration et la mise en œuvre d'un projet d'orientation professionnelle"
+        },
+        "42": {
+          "name": "Animer des activités de détente ou de loisirs"
+        },
+        "43": {
+          "name": "Animer des activités sportives"
+        },
+        "44": {
+          "name": "Assurer l'encadrement de l'enfant ou d'un groupe d'enfants"
+        },
+        "45": {
+          "name": "Assurer une médiation sociale"
+        },
+        "46": {
+          "name": "Mettre en œuvre et animer des actions socio-culturelles"
+        },
+        "47": {
+          "name": "Concevoir et mettre en place des protocoles de soins"
+        },
+        "48": {
+          "name": "Procéder à des examens médicaux"
+        },
+        "49": {
+          "name": "Réaliser un diagnostic médical"
+        },
+        "50": {
+          "name": "Surveiller l'état de santé d'une personne"
+        },
+        "51": {
+          "name": "Concevoir et réaliser des soins de rééducation"
+        },
+        "52": {
+          "name": "Prodiguer des soins corporels, esthétiques"
+        },
+        "53": {
+          "name": "Prodiguer des soins médicaux"
+        },
+        "54": {
+          "name": "Prodiguer des soins sur les animaux"
+        },
+        "55": {
+          "name": "Prodiguer les gestes de premiers secours en cas d'urgence"
+        },
+        "56": {
+          "name": "Participer à une intervention chirurgicale"
+        },
+        "57": {
+          "name": "Collecter des données ou informations"
+        },
+        "58": {
+          "name": "Structurer, synthétiser des informations"
+        },
+        "59": {
+          "name": "Mémoriser des informations"
+        },
+        "60": {
+          "name": "Actualiser ses connaissances générales et professionnelles"
+        },
+        "61": {
+          "name": "Faire peuve de créativité dans ses idées et son travail"
+        },
+        "62": {
+          "name": "Analyser, résoudre un problème courant ou complexe"
+        },
+        "63": {
+          "name": "Créer, élaborer et identifier des concepts innovants"
+        },
+        "64": {
+          "name": "Analyser une situation avec objectivité et recul"
+        },
+        "65": {
+          "name": "Observer, visualiser, s'orienter"
+        },
+        "66": {
+          "name": "Percevoir, composer des arômes, des parfums"
+        },
+        "67": {
+          "name": "Concevoir des recettes et menus"
+        },
+        "68": {
+          "name": "Elaborer des plats cuisinés"
+        },
+        "69": {
+          "name": "Réaliser une veille documentaire"
+        },
+        "70": {
+          "name": "Gérer une base documentaire"
+        },
+        "71": {
+          "name": "Concevoir l'ingénierie de formation et les séquences pédagogiques"
+        },
+        "72": {
+          "name": "Organiser et piloter un programme de formation"
+        },
+        "73": {
+          "name": "Concevoir des supports de formation"
+        },
+        "74": {
+          "name": "Evaluer des acquis d'apprentissage, de formation ou d'expérience"
+        },
+        "75": {
+          "name": "Evaluer la qualité et la conformité d'une formation"
+        },
+        "76": {
+          "name": "Accompagner une personne en apprentissage ou en tutorat"
+        },
+        "77": {
+          "name": "Enseigner, former une personne ou un groupe"
+        },
+        "78": {
+          "name": "Extraire, importer, transférer des données numériques"
+        },
+        "79": {
+          "name": "Numériser des documents, médias ou supports techniques"
+        },
+        "80": {
+          "name": "Analyser, exploiter, structurer des données"
+        },
+        "81": {
+          "name": "Définir et faire évoluer des procédés de traitement de l'information"
+        },
+        "82": {
+          "name": "Conduire des travaux d'études et de recherche"
+        },
+        "83": {
+          "name": "Concevoir une formule technique, un modèle théorique"
+        },
+        "84": {
+          "name": "Concevoir un modèle, un prototype"
+        },
+        "85": {
+          "name": "Créer un dessin technique, un plan, ou une carte"
+        },
+        "86": {
+          "name": "Créer, concevoir de nouveaux produits ou des améliorations produits"
+        },
+        "87": {
+          "name": "Collecter, tester, analyser des échantillons, des matériaux"
+        },
+        "88": {
+          "name": "Concevoir et animer une démarche d'innovation"
+        },
+        "89": {
+          "name": "Procéder à des tests, expérimentations"
+        },
+        "90": {
+          "name": "Administrer une enquête, un sondage"
+        },
+        "91": {
+          "name": "Concevoir un questionnaire, un support d'enquête"
+        },
+        "92": {
+          "name": "Définir une stratégie de communication"
+        },
+        "93": {
+          "name": "Organiser et mettre en œuvre des actions de communication"
+        },
+        "94": {
+          "name": "Concevoir et mettre en œuvre des supports de communication et d'image"
+        },
+        "95": {
+          "name": "Concevoir et réaliser des éléments graphiques et visuels"
+        },
+        "96": {
+          "name": "Mettre en forme, éditer un manuscrit"
+        },
+        "97": {
+          "name": "Réaliser un montage son ou vidéo"
+        },
+        "98": {
+          "name": "Rédiger un article, un contenu éditorial"
+        },
+        "99": {
+          "name": "Organiser, coordonner, installer un évènement"
+        },
+        "100": {
+          "name": "Animer une émission, un spectacle"
+        },
+        "101": {
+          "name": "Gérer les relations publiques"
+        },
+        "102": {
+          "name": "Réaliser une traduction, transposer un texte"
+        },
+        "103": {
+          "name": "Ecrire ou modifier une œuvre littéraire (roman, nouvelle, scénario…)"
+        },
+        "104": {
+          "name": "Composer une œuvre musicale"
+        },
+        "105": {
+          "name": "Mettre en scène un spectacle"
+        },
+        "106": {
+          "name": "Réaliser un film, une émission, un programme"
+        },
+        "107": {
+          "name": "Définir un style ou une direction artistique dans les domaines de l'art, la mode ou le design"
+        },
+        "108": {
+          "name": "Participer à la réalisation ou la modification d'un objet d'art"
+        },
+        "109": {
+          "name": "Réaliser une oeuvre plastique (peinture, sculpture...)"
+        },
+        "110": {
+          "name": "Porter une appréciation esthétique"
+        },
+        "111": {
+          "name": "Restaurer, conserver des objets"
+        },
+        "112": {
+          "name": "Danser, interpréter une chorégraphie"
+        },
+        "113": {
+          "name": "Diffuser, mixer des morceaux de musique"
+        },
+        "114": {
+          "name": "Filmer, photographier"
+        },
+        "115": {
+          "name": "Interpréter un rôle dans les domaines de l'art du spectacle ou de l'audiovisuel"
+        },
+        "116": {
+          "name": "Réaliser ou orchestrer une performance musicale"
+        },
+        "117": {
+          "name": "Comprendre, interpréter des données et documents techniques"
+        },
+        "118": {
+          "name": "Créer une documentation technique"
+        },
+        "119": {
+          "name": "Renseigner, mettre à jour une documentation technique"
+        },
+        "120": {
+          "name": "Mettre en oeuvre les processus et les modes opératoires techniques"
+        },
+        "121": {
+          "name": "Elaborer des processus et des modes opératoires techniques"
+        },
+        "122": {
+          "name": "Réaliser et vérifier des calculs de mathématiques généraux ou appliqués"
+        },
+        "123": {
+          "name": "Relever, contrôler, ajuster des mesures et dosages"
+        },
+        "124": {
+          "name": "Saisir, mettre à jour un registre, un répertoire ou une base de données"
+        },
+        "125": {
+          "name": "Sélectionner, régler un outil, une machine, un équipement"
+        },
+        "126": {
+          "name": "Utiliser les réseaux sociaux"
+        },
+        "127": {
+          "name": "Maitriser un geste / une gestuelle technique"
+        },
+        "128": {
+          "name": "Préparer et réaliser des performances sportives"
+        },
+        "129": {
+          "name": "Réaliser une veille technique ou technologique et anticiper les évolutions"
+        },
+        "130": {
+          "name": "Produire, paramétrer, ajuster, et poser un appareillage médical"
+        },
+        "131": {
+          "name": "Concevoir un logiciel, un système d'informations, une application"
+        },
+        "132": {
+          "name": "Concevoir, améliorer un équipement, une machine, une installation"
+        },
+        "133": {
+          "name": "Elaborer un schéma directeur technique, définir des besoins en équipement"
+        },
+        "134": {
+          "name": "Réaliser une étude de faisabilité technique"
+        },
+        "135": {
+          "name": "Réaliser une étude d'ergonomie, analyser les usages"
+        },
+        "136": {
+          "name": "Rédiger un cahier des charges, des spécifications techniques"
+        },
+        "137": {
+          "name": "Développer un logiciel, un système d'informations, une application"
+        },
+        "138": {
+          "name": "Paramétrer un logiciel, un outil, un système numérique"
+        },
+        "139": {
+          "name": "Raccorder, gérer un réseau technique"
+        },
+        "140": {
+          "name": "Concevoir l'architecture d'un système, d'un réseau"
+        },
+        "141": {
+          "name": "Administrer un système d'informations"
+        },
+        "142": {
+          "name": "Gérer une base de données numériques"
+        },
+        "143": {
+          "name": "Démonter un équipement, une installation"
+        },
+        "144": {
+          "name": "Déployer, intégrer un logiciel, un système d'informations, une application"
+        },
+        "145": {
+          "name": "Réaliser un diagnostic technique"
+        },
+        "146": {
+          "name": "Contrôler la conformité d'une machine, d'une installation, ou d'un site"
+        },
+        "147": {
+          "name": "Entretenir un équipement, une machine, une installation"
+        },
+        "148": {
+          "name": "Réaliser une opération de maintenance, de support technique"
+        },
+        "149": {
+          "name": "Réparer une machine, un équipement"
+        },
+        "150": {
+          "name": "Accompagner l'appropriation d'un outil par ses utilisateurs"
+        },
+        "151": {
+          "name": "Apporter une assistance technique"
+        },
+        "152": {
+          "name": "Approvisionner une machine en matière première ou en produit"
+        },
+        "153": {
+          "name": "Manipuler des produits dangereux ou fragiles"
+        },
+        "154": {
+          "name": "Préparer une matière première ou du matériel en prévision d'un travail"
+        },
+        "155": {
+          "name": "Transformer une matière première"
+        },
+        "156": {
+          "name": "Optimiser un processus"
+        },
+        "157": {
+          "name": "Piloter une démarche qualité, un processus d'amélioration continue"
+        },
+        "158": {
+          "name": "Entretenir, nettoyer un produit ou du matériel"
+        },
+        "159": {
+          "name": "Réaliser des corrections ou réparations sur un ouvrage"
+        },
+        "160": {
+          "name": "Appliquer un traitement, un produit"
+        },
+        "161": {
+          "name": "Construire un bâtiment, un ouvrage"
+        },
+        "162": {
+          "name": "Décorer, travailler l'aspect visuel d'un produit"
+        },
+        "163": {
+          "name": "Découper, tailler des matériaux, des matières premières"
+        },
+        "164": {
+          "name": "Fabriquer, façonner des produits"
+        },
+        "165": {
+          "name": "Fixer, poser, installer des éléments, des ouvrages"
+        },
+        "166": {
+          "name": "Assembler des matériaux, des produits"
+        },
+        "167": {
+          "name": "Réaliser la finition d'un produit, d'un article, d'un ouvrage"
+        },
+        "168": {
+          "name": "Gérer les stocks"
+        },
+        "169": {
+          "name": "Organiser et contrôler un approvisionnement"
+        },
+        "170": {
+          "name": "Réaliser un inventaire"
+        },
+        "171": {
+          "name": "Mettre en œuvre l'organisation matérielle et logistique d'un événement"
+        },
+        "172": {
+          "name": "Organiser une opération logistique"
+        },
+        "173": {
+          "name": "Organiser le traitement des commandes"
+        },
+        "174": {
+          "name": "Manipuler un engin de manutention ou de chantier"
+        },
+        "175": {
+          "name": "Réceptionner des produits, des matières premières, vérifier la conformité d'une livraison"
+        },
+        "176": {
+          "name": "Trier, ranger des produits, des matières premières"
+        },
+        "177": {
+          "name": "Conditionner des produits"
+        },
+        "178": {
+          "name": "Charger, décharger, manutentionner des produits"
+        },
+        "179": {
+          "name": "Aménager un espace physique de stockage"
+        },
+        "180": {
+          "name": "Contrôler l'accès et la circulation des personnes"
+        },
+        "181": {
+          "name": "Entretenir, nettoyer un espace, un lieu, un local"
+        },
+        "182": {
+          "name": "Gérer un parc de machines, d'équipements, de locaux"
+        },
+        "183": {
+          "name": "Réguler, superviser le trafic d'un réseau de transport"
+        },
+        "184": {
+          "name": "Surveiller un espace, un local, un lieu, une installation"
+        },
+        "185": {
+          "name": "Organiser une livraison, une expédition, un transport"
+        },
+        "186": {
+          "name": "Conduire un véhicule ferroviaire"
+        },
+        "187": {
+          "name": "Conduire un véhicule routier routier"
+        },
+        "188": {
+          "name": "Conduire, convoyer un véhicule marin ou fluvial"
+        },
+        "189": {
+          "name": "Conduire un aéronef"
+        },
+        "190": {
+          "name": "Transporter des passagers"
+        },
+        "191": {
+          "name": "Transporter des marchandises, effectuer une livraison"
+        },
+        "192": {
+          "name": "Définir et mettre en œuvre une politique de développement durable"
+        },
+        "193": {
+          "name": "Etablir des prévisions météorologiques"
+        },
+        "194": {
+          "name": "Réaliser un diagnostic énergétique"
+        },
+        "195": {
+          "name": "Réaliser un diagnostic environnemental"
+        },
+        "196": {
+          "name": "Evacuer, recycler des déchets, des produits"
+        },
+        "197": {
+          "name": "Extraire, exploiter un forage"
+        },
+        "198": {
+          "name": "Identifier, repérer un lieu"
+        },
+        "199": {
+          "name": "Concevoir un projet architectural ou d'aménagement"
+        },
+        "200": {
+          "name": "Organiser et conduire des travaux, un chantier"
+        },
+        "201": {
+          "name": "Décorer, aménager, agencer un espace"
+        },
+        "202": {
+          "name": "Cultiver et récolter des végétaux"
+        },
+        "203": {
+          "name": "Entretenir et développer un élevage animal"
+        },
+        "204": {
+          "name": "Aménager, entretenir un espace naturel, une forêt"
+        },
+        "205": {
+          "name": "Rédiger un rapport, un compte rendu d'activité"
+        },
+        "206": {
+          "name": "Alerter et signaler la nature d’un problème"
+        },
+        "207": {
+          "name": "Identifier et/ou respecter des règles, normes et procédures opérationnelles"
+        },
+        "208": {
+          "name": "Respecter les règles d'éthique et de déontologie"
+        },
+        "209": {
+          "name": "Respecter les règles d'hygiène, de sécurité et d'environnement (HSE)"
+        },
+        "210": {
+          "name": "Contrôler des indicateurs chiffrés, analyser et corriger des écarts"
+        },
+        "211": {
+          "name": "Elaborer des règles et procédures de qualité, hygiène, sécurité, environnement (QHSE)"
+        },
+        "212": {
+          "name": "Evaluer, prévenir, et gérer les risques et la sécurité"
+        },
+        "213": {
+          "name": "Transmettre et faire respecter les règles et les procédures"
+        },
+        "214": {
+          "name": "Appliquer des actions ou des règles de prévention"
+        },
+        "215": {
+          "name": "Elaborer et suivre un budget"
+        },
+        "216": {
+          "name": "Concevoir et organiser un projet"
+        },
+        "217": {
+          "name": "Elaborer et planifier un programme de production, d'exploitation"
+        },
+        "218": {
+          "name": "Elaborer un plan d'action, fixer des objectifs, définir des priorités"
+        },
+        "219": {
+          "name": "Organiser et planifier une activité"
+        },
+        "220": {
+          "name": "Organiser l'environnement de travail"
+        },
+        "221": {
+          "name": "Piloter la gestion de la production, de l'exploitation"
+        },
+        "222": {
+          "name": "Piloter un projet.1"
+        },
+        "223": {
+          "name": "Piloter une activité"
+        },
+        "224": {
+          "name": "Evaluer les réalisations d'un projet, la mise en oeuvre d'un plan d'action"
+        },
+        "225": {
+          "name": "Mettre en œuvre une stratégie, un plan d'actions"
+        },
+        "226": {
+          "name": "Promouvoir une proposition, un projet"
+        },
+        "227": {
+          "name": "Effectuer une réservation"
+        },
+        "228": {
+          "name": "Etablir, suivre, mettre à jour des dossiers administratifs"
+        },
+        "229": {
+          "name": "Contrôler la conformité des données ou des documents"
+        },
+        "230": {
+          "name": "Effectuer le suivi des commandes, la facturation et l'encaissement"
+        },
+        "231": {
+          "name": "Gérer la paie"
+        },
+        "232": {
+          "name": "Piloter la gestion administrative et financière d'une activité"
+        },
+        "233": {
+          "name": "Réaliser une analyse comptable et financière"
+        },
+        "234": {
+          "name": "Réaliser des opérations comptables"
+        },
+        "235": {
+          "name": "Garantir la fiabilité des comptes et des documents comptables"
+        },
+        "236": {
+          "name": "Mettre en œuvre un contrôle de gestion"
+        },
+        "237": {
+          "name": "Réaliser un audit financier, gérer les risques financiers"
+        },
+        "238": {
+          "name": "Monter un dossier de financement"
+        },
+        "239": {
+          "name": "Définir la stratégie financière d'une structure"
+        },
+        "240": {
+          "name": "Réaliser des opérations de marché financier"
+        },
+        "241": {
+          "name": "Estimer la valeur d'un bien, d'un produit"
+        },
+        "242": {
+          "name": "Evaluer et gérer un sinistre"
+        },
+        "243": {
+          "name": "Gérer la trésorerie, le recouvrement"
+        },
+        "244": {
+          "name": "Gérer un patrimoine, un portefeuille d'actifs"
+        },
+        "245": {
+          "name": "Préparer et conduire des opérations immobilières"
+        },
+        "246": {
+          "name": "Elaborer des procédures administratives, concevoir des supports de suivi et de gestion"
+        },
+        "247": {
+          "name": "Réaliser un diagnostic organisationnel"
+        },
+        "248": {
+          "name": "Conseiller une organisation, une structure"
+        },
+        "249": {
+          "name": "Diriger et gérer une structure, une organisation"
+        },
+        "250": {
+          "name": "Superviser le contrôle interne d'une structure"
+        },
+        "251": {
+          "name": "Représenter sa structure lors d'un événement ou auprès d'instances de décision"
+        },
+        "252": {
+          "name": "Maîtriser l'environnement légal et règlementaire"
+        },
+        "253": {
+          "name": "Effectuer une analyse juridique"
+        },
+        "254": {
+          "name": "Rédiger un acte juridique ou règlementaire"
+        },
+        "255": {
+          "name": "Contrôler et faire appliquer le respect de dispositions légales et réglementaires"
+        },
+        "256": {
+          "name": "Assurer un conseil juridique"
+        },
+        "257": {
+          "name": "Négocier un contrat"
+        },
+        "258": {
+          "name": "Rédiger un contrat"
+        },
+        "259": {
+          "name": "Suivre un contrat, vérifier le respect des clauses contractuelles"
+        },
+        "260": {
+          "name": "Conduire une procédure contentieuse"
+        },
+        "261": {
+          "name": "Gérer des réclamations et litiges"
+        },
+        "262": {
+          "name": "Défendre les intérêts d'une personne physique ou morale"
+        },
+        "263": {
+          "name": "Mener une enquête judiciaire"
+        },
+        "264": {
+          "name": "Contrôler et/ou appréhender une personne"
+        },
+        "265": {
+          "name": "Diriger ou réaliser des opérations militaires ou de sécurité publique"
+        },
+        "266": {
+          "name": "Evaluer une situation à risque"
+        },
+        "267": {
+          "name": "Mettre en œuvre des mesures de sûreté"
+        },
+        "268": {
+          "name": "Protéger des personnes et des biens"
+        },
+        "269": {
+          "name": "Gérer les finances publiques, le recouvrement des impôts"
+        },
+        "270": {
+          "name": "Développer et gérer les relations internationales"
+        },
+        "271": {
+          "name": "Elaborer une politique publique"
+        },
+        "272": {
+          "name": "Evaluer une politique publique"
+        },
+        "273": {
+          "name": "Anticiper des dangers, problèmes ou besoins matériels et techniques"
+        },
+        "274": {
+          "name": "S'adapter aux changements"
+        },
+        "275": {
+          "name": "Gérer les imprévus ou les situations d'urgence"
+        },
+        "276": {
+          "name": "Estimer les coûts et les délais d'une activité ou d'une prestation"
+        },
+        "277": {
+          "name": "Contrôler les coûts et les délais d'une activité ou d'une prestation"
+        },
+        "278": {
+          "name": "Piloter la performance et la rentabilité d'une activité"
+        },
+        "279": {
+          "name": "Identifier et sélectionner des fournisseurs, sous-traitants, prestataires"
+        },
+        "280": {
+          "name": "Elaborer une stratégie d'achat, optimiser la procédure d'achat"
+        },
+        "281": {
+          "name": "Gérer la relation avec les fournisseurs, sous-traitants, prestataires"
+        },
+        "282": {
+          "name": "Lancer et gérer un appel d'offres"
+        },
+        "283": {
+          "name": "Contrôler la réalisation d'une prestation"
+        },
+        "284": {
+          "name": "Mettre en place des solutions d'amélioration de la performance"
+        },
+        "285": {
+          "name": "Réaliser une étude de marché, évaluer le potentiel d’un produit"
+        },
+        "286": {
+          "name": "Réaliser une veille de marché, une veille concurrentielle"
+        },
+        "287": {
+          "name": "Rechercher des financements, des investisseurs"
+        },
+        "288": {
+          "name": "Concevoir et mettre en œuvre une stratégie digitale"
+        },
+        "289": {
+          "name": "Définir la politique et les orientations générales d'une organisation"
+        },
+        "290": {
+          "name": "Elaborer un plan d'investissement, un business plan"
+        },
+        "291": {
+          "name": "Elaborer une stratégie de développement d'activité"
+        },
+        "292": {
+          "name": "Définir la tarification des produits ou des services"
+        },
+        "293": {
+          "name": "Elaborer et mettre en œuvre une offre de produits ou de services"
+        },
+        "294": {
+          "name": "Organiser et développer un réseau de distribution"
+        },
+        "295": {
+          "name": "Développer et piloter un réseau d'organisations partenaires"
+        },
+        "296": {
+          "name": "Analyser et identifier des tendances, des préférences de consommation"
+        },
+        "297": {
+          "name": "Elaborer un plan marketing, une stratégie de marque et de communication"
+        },
+        "298": {
+          "name": "Recueillir et analyser les besoins client"
+        },
+        "299": {
+          "name": "Elaborer une stratégie commerciale"
+        },
+        "300": {
+          "name": "Mettre en œuvre des actions commerciales et promotionnelles"
+        },
+        "301": {
+          "name": "Elaborer une proposition commerciale, répondre à un appel d'offre, réaliser un devis"
+        },
+        "302": {
+          "name": "Organiser, aménager un espace de vente"
+        },
+        "303": {
+          "name": "Présenter et valoriser un produit ou un service"
+        },
+        "304": {
+          "name": "Prospecter de nouveaux clients, de nouveaux marchés"
+        },
+        "305": {
+          "name": "Conclure une transaction"
+        },
+        "306": {
+          "name": "Négocier des conditions commerciales"
+        },
+        "307": {
+          "name": "Vendre ou louer des produits ou des services"
+        },
+        "308": {
+          "name": "Assurer un service après-vente"
+        },
+        "309": {
+          "name": "Développer et fidéliser la relation client"
+        },
+        "310": {
+          "name": "Coordonner des actions de promotion du patrimoine"
+        },
+        "311": {
+          "name": "Produire une création numérique"
+        },
+        "312": {
+          "name": "Interpréter une oeuvre, réaliser un spectacle ou un numéro"
+        },
+        "313": {
+          "name": "Transmettre des connaissances dans une discipline universitaire ou professionnelle"
+        },
+        "314": {
+          "name": "Poser pour une oeuvre, défiler"
+        },
+        "315": {
+          "name": "Concevoir des maquettes et pré-maquettes"
+        },
+        "316": {
+          "name": "Réaliser une analyse ou modélisation statistique de données"
+        },
+        "317": {
+          "name": "Réaliser des préparations de patisserie, boulangerie, viennoiserie, et chocolaterie"
+        },
+        "318": {
+          "name": "Analyser une situation et produire un diagnostic"
+        },
+        "319": {
+          "name": "Diriger une équipe"
+        },
+        "320": {
+          "name": "Gérer l'administratif dans le domaine médical"
+        },
+        "321": {
+          "name": "Identifier et mobiliser les fournisseurs et les sources d’information"
+        },
+        "322": {
+          "name": "Intervenir en milieu hostile ou en altitude"
+        },
+        "323": {
+          "name": "Analyser et contrôler la qualité et la conformité des process"
+        },
+        "324": {
+          "name": "Conseiller dans le cadre d'une relation commerciale"
+        },
+        "325": {
+          "name": "Superviser une équipe, un groupe de travail"
+        },
+        "326": {
+          "name": "Intervenir sur des projets"
+        },
+        "327": {
+          "name": "Analyser une stratégie, établir un diagnostic stratégique"
+        },
+        "328": {
+          "name": "Contrôler la qualité et la conformité d'un livrable"
+        },
+        "329": {
+          "name": "Contrôler la qualité d'une oeuvre ou d'un service"
+        },
+        "330": {
+          "name": "Relever et contrôler la température"
+        },
+        "331": {
+          "name": "Adapter, ajuster un article en fonction du besoin"
+        },
+        "332": {
+          "name": "Analyser et contrôler la qualité et la conformité des matières et des produits"
+        },
+        "333": {
+          "name": "Contrôler la qualité et réaliser des retouches"
+        },
+        "334": {
+          "name": "Opérer la gestion de base de logiciels ou matériels numériques"
+        },
+        "335": {
+          "name": "Assurer la cuisson, le séchage de pièces ou matériaux usinés"
+        },
+        "336": {
+          "name": "Abattre et nettoyer des animaux"
+        },
+        "337": {
+          "name": "Utiliser et régler des appareils et équipements"
+        },
+        "338": {
+          "name": "Utiliser et régler des machines ou équipements d'extraction et usinage de la pierre"
+        },
+        "339": {
+          "name": "Utiliser et régler des appareils et équipements de plasturgie"
+        },
+        "340": {
+          "name": "Conserver des échantillons"
+        },
+        "341": {
+          "name": "Lever des produits ou du matériel de charge lourde"
+        },
+        "342": {
+          "name": "Organiser ou surveiller des phases de fabrication"
+        },
+        "343": {
+          "name": "Peindre des surfaces et supports visuels, et préparer à la peinture"
+        },
+        "344": {
+          "name": "Réaliser des ouvrages d'isolation"
+        },
+        "345": {
+          "name": "Réaliser des ouvrages de maçonnerie"
+        },
+        "346": {
+          "name": "Réaliser des travaux de terrassement, de fondations"
+        },
+        "347": {
+          "name": "Réaliser des travaux de construction et de maintenance en mécanique"
+        },
+        "348": {
+          "name": "Réaliser, poser des revêtements"
+        },
+        "349": {
+          "name": "Rénover, moderniser, réhabiliter des installations"
+        },
+        "350": {
+          "name": "Construire et modifier des éléments ou des structures en bois"
+        },
+        "351": {
+          "name": "Utiliser et régler des machines ou équipements de métallurgie"
+        },
+        "352": {
+          "name": "Utiliser et régler des machines ou équipements de son et lumière, cinématographiques, audiovisuels"
+        },
+        "353": {
+          "name": "Utiliser et régler des machines ou équipements électrotechniques"
+        },
+        "354": {
+          "name": "Utiliser un outil ou machine d'impression ou de tirage"
+        },
+        "355": {
+          "name": "Utiliser un outil, une machine, un équipement dans le domaine du BTP"
+        },
+        "356": {
+          "name": "Utiliser un outil, une machine, un équipement d'industrie multi-secteurs"
+        },
+        "357": {
+          "name": "Utiliser et régler des machines ou équipements de verrerie industrielle ou céramique technique"
+        },
+        "358": {
+          "name": "Utiliser et régler des machines ou équipements de géologie, topographie"
+        },
+        "359": {
+          "name": "Utiliser et régler des appareils et équipements d'industrie textile"
+        },
+        "360": {
+          "name": "Utiliser et régler des machines ou équipements agricoles, aquacoles ou agronomes"
+        },
+        "361": {
+          "name": "Utiliser et régler des machines ou équipements d'artisanat"
+        },
+        "362": {
+          "name": "Utiliser et régler des machines ou équipements de combinaison d'éléments liquides ou chimiques"
+        },
+        "363": {
+          "name": "Utiliser et régler des machines ou équipements agroalimentaires"
+        },
+        "364": {
+          "name": "Utiliser un outil, une machine, un équipement d'industrie automobile"
+        },
+        "365": {
+          "name": "Utiliser un outil, une machine, un équipement de traitement d'hydrocarbures"
+        },
+        "366": {
+          "name": "Utiliser un équipement de protection individuelle"
+        },
+        "367": {
+          "name": "Utiliser un outil, une machine, un équipement d'industrie navale ou aéronautique"
+        },
+        "368": {
+          "name": "Concevoir, fabriquer un outil technique"
+        },
+        "369": {
+          "name": "Réaliser des opérations de montage, d'assemblage et démontage"
+        },
+        "370": {
+          "name": "Réaliser des coulages et moulages des matières premières"
+        },
+        "371": {
+          "name": "Effectuer des mélanges de matières premières"
+        },
+        "372": {
+          "name": "Préparer un support, une matière"
+        },
+        "373": {
+          "name": "Contrôler le fonctionnement d'une machine, d'une installation"
+        },
+        "374": {
+          "name": "Conduire et contrôler un procédé de fermentation"
+        },
+        "375": {
+          "name": "Former des matières premières (acier, verre, plastiques...)"
+        },
+        "376": {
+          "name": "Transformer des matières premières d'origine animale"
+        },
+        "377": {
+          "name": "Transformer des matières premières d'origine végétale"
+        },
+        "378": {
+          "name": "Utiliser et régler des outils et machines de menuiserie, placage et papeterie"
+        },
+        "379": {
+          "name": "Transformer et traiter des métaux"
+        },
+        "380": {
+          "name": "Réaliser des marquages"
+        },
+        "381": {
+          "name": "Contrôler la qualité d'une matière première, d'une ressource"
+        },
+        "382": {
+          "name": "Contrôler la qualité et la conformité d'un bâtiment, d'une infrastructure"
+        },
+        "383": {
+          "name": "Installer, mettre en oeuvre des réalisations de gros oeuvre"
+        },
+        "384": {
+          "name": "Installer, mettre en oeuvre des réalisations de second oeuvre"
+        },
+        "385": {
+          "name": "Equiper techniquement des bâtiments, installations, et véhicules"
+        },
+        "386": {
+          "name": "Préparer un patient pour une intervention médicale"
+        },
+        "387": {
+          "name": "Analyser des résultats d'examen médicaux"
+        },
+        "388": {
+          "name": "Concevoir des protocoles de soins"
+        },
+        "389": {
+          "name": "Coordonner des soins médicaux"
+        },
+        "390": {
+          "name": "Démarrer ou arrêter une machine, un appareil, ou une ligne"
+        },
+        "391": {
+          "name": "Favoriser une alimentation animale équilibrée"
+        },
+        "392": {
+          "name": "Fournir des soins posts accouchements"
+        },
+        "393": {
+          "name": "Informer sur les démarches de soins"
+        },
+        "394": {
+          "name": "Mettre en place des protocoles de soins"
+        },
+        "395": {
+          "name": "Participer à une intervention chirurgicale sur un animal"
+        },
+        "396": {
+          "name": "Pratiquer un suivi médical"
+        },
+        "397": {
+          "name": "Prendre la parole en public"
+        },
+        "398": {
+          "name": "Procéder à un examen psychologique"
+        },
+        "399": {
+          "name": "Prodiguer des soins corporels et esthétiques aux animaux"
+        },
+        "400": {
+          "name": "Réaliser des soins de médecine non conventionnelle"
+        },
+        "401": {
+          "name": "Réaliser une analyse des risques liés à une prise en charge médicale"
+        },
+        "402": {
+          "name": "Prodiguer des soins paramédicaux"
+        },
+        "403": {
+          "name": "Réaliser des ouvrages de menuiserie"
+        },
+        "404": {
+          "name": "Superviser des activités, opérations, et projets"
+        },
+        "405": {
+          "name": "Réviser des documents, travaux, ou procédures"
+        },
+        "406": {
+          "name": "Eduquer / dresser des animaux"
+        }
+      }
+
+      const jobRecommendation = {
+        "scores": [
+          {
+            "job": {
+              "id": "0",
+              "name": "Conduite d'engins agricoles et forestiers"
+            },
+            "score": 1.6636363636363636
+          },
+          {
+            "job": {
+              "id": "5",
+              "name": "Sylviculteur / Sylvicultrice"
+            },
+            "score": 1.5545454545454547
+          },
+          {
+            "job": {
+              "id": "1",
+              "name": "Bûcheronnage et élagage"
+            },
+            "score": 1.3272727272727272
+          },
+          {
+            "job": {
+              "id": "2",
+              "name": "Entretien des espaces naturels"
+            },
+            "score": 0.8272727272727272
+          },
+          {
+            "job": {
+              "id": "336",
+              "name": "Intervention en grande hauteur"
+            },
+            "score": 0.7545454545454545
+          },
+          {
+            "job": {
+              "id": "3",
+              "name": "Aménagement et entretien des espaces verts"
+            },
+            "score": 0.6454545454545454
+          },
+          {
+            "job": {
+              "id": "161",
+              "name": "Conduite de grue"
+            },
+            "score": 0.5454545454545454
+          },
+          {
+            "job": {
+              "id": "25",
+              "name": "Saliculture"
+            },
+            "score": 0.43636363636363634
+          },
+          {
+            "job": {
+              "id": "22",
+              "name": "Horticulture et maraîchage"
+            },
+            "score": 0.43636363636363634
+          },
+          {
+            "job": {
+              "id": "288",
+              "name": "Conduite d'équipement de déformation des métaux"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "298",
+              "name": "Conduite d'équipement de fabrication de papier ou de carton"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "299",
+              "name": "Conduite d'installation de pâte à papier"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "35",
+              "name": "Réalisation d'objets en lianes, fibres et brins végétaux"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "226",
+              "name": "Intervention technique en études et conception en automatisme"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "24",
+              "name": "Polyculture, élevage"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "162",
+              "name": "Conduite d'engins de terrassement et de carrière"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "287",
+              "name": "Conduite d'équipement d'usinage"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "135",
+              "name": "Production en laboratoire cinématographique"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "136",
+              "name": "Production en laboratoire photographique"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "13",
+              "name": "Arboriculture et viticulture"
+            },
+            "score": 0.36363636363636365
+          },
+          {
+            "job": {
+              "id": "338",
+              "name": "Intervention en milieux et produits nocifs"
+            },
+            "score": 0.3181818181818182
+          },
+          {
+            "job": {
+              "id": "337",
+              "name": "Intervention en milieu subaquatique"
+            },
+            "score": 0.3181818181818182
+          },
+          {
+            "job": {
+              "id": "4",
+              "name": "Protection du patrimoine naturel"
+            },
+            "score": 0.20909090909090908
+          },
+          {
+            "job": {
+              "id": "219",
+              "name": "Expertise technique couleur en industrie"
+            },
+            "score": 0.20909090909090908
+          },
+          {
+            "job": {
+              "id": "137",
+              "name": "Projection cinéma"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "240",
+              "name": "Intervention technique en formulation et analyse sensorielle"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "244",
+              "name": "Assemblage d'ouvrages en bois"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "156",
+              "name": "Métré de la construction"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "245",
+              "name": "Conduite d'équipement de fabrication de l'ameublement et du bois"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "235",
+              "name": "Intervention technique en méthodes et industrialisation"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "246",
+              "name": "Conduite d'installation de production de panneaux bois"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "248",
+              "name": "Première transformation de bois d'oeuvre"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "89",
+              "name": "Vente de végétaux"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "139",
+              "name": "Conduite de machines d'impression"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "227",
+              "name": "Intervention technique en études et développement électronique"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "155",
+              "name": "Mesures topographiques"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "140",
+              "name": "Conduite de machines de façonnage routage"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "220",
+              "name": "Conception et dessin de produits électriques et électroniques"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "209",
+              "name": "Plonge en restauration"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "207",
+              "name": "Personnel polyvalent en restauration"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "206",
+              "name": "Personnel de cuisine"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "249",
+              "name": "Réalisation de menuiserie bois et tonnellerie"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "141",
+              "name": "Encadrement des industries graphiques"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "193",
+              "name": "Personnel d'attractions ou de structures de loisirs"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "142",
+              "name": "Façonnage et routage"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "174",
+              "name": "Pose de fermetures menuisées"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "165",
+              "name": "Montage de structures et de charpentes bois"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "146",
+              "name": "Intervention technique en industrie graphique"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "202",
+              "name": "Personnel d'étage"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "315",
+              "name": "Maintenance des bâtiments et des locaux"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "250",
+              "name": "Réalisation de meubles en bois"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "295",
+              "name": "Réglage d'équipement de production industrielle"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "655",
+              "name": "Exploitation et manoeuvre des remontées mécaniques"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "652",
+              "name": "Conduite sur rails"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "642",
+              "name": "Manutention portuaire"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "635",
+              "name": "Préparation des vols"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "634",
+              "name": "Exploitation des pistes aéroportuaires"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "632",
+              "name": "Personnel d'escale aéroportuaire"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "630",
+              "name": "Navigation commerciale aérienne"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "626",
+              "name": "Gestion des opérations de circulation internationale des marchandises"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "625",
+              "name": "Affrètement transport"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "623",
+              "name": "Manoeuvre et conduite d'engins lourds de manutention"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "620",
+              "name": "Conduite d'engins de déplacement des charges"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "604",
+              "name": "Exploitation de systèmes de communication et de commandement"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "469",
+              "name": "Régie générale"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "466",
+              "name": "Machinerie spectacle"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "465",
+              "name": "Image cinématographique et télévisuelle"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "464",
+              "name": "Éclairage spectacle"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "446",
+              "name": "Conduite d'opérations funéraires"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "439",
+              "name": "Salubrité et traitement de nuisibles"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "437",
+              "name": "Nettoyage des espaces urbains"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "434",
+              "name": "Nettoyage de locaux"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "432",
+              "name": "Lavage de vitres"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "373",
+              "name": "Soins infirmiers spécialisés en anesthésie"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "372",
+              "name": "Coordination de services médicaux ou paramédicaux"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "363",
+              "name": "Optique - lunetterie"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "352",
+              "name": "Personnel polyvalent des services hospitaliers"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "345",
+              "name": "Réparation de cycles, motocycles et motoculteurs de loisirs"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "343",
+              "name": "Mécanique de marine"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "85",
+              "name": "Nettoyage d'articles textiles ou cuirs"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "313",
+              "name": "Entretien d'affichage et mobilier urbain"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "86",
+              "name": "Réparation d'articles en cuir et matériaux souples"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "656",
+              "name": "Manoeuvre du réseau ferré"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "10",
+              "name": "Aide agricole de production légumière ou végétale"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "21",
+              "name": "Fermentation de boissons alcoolisées"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "6",
+              "name": "Conseil et assistance technique en agriculture"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "75",
+              "name": "Boulangerie - viennoiserie"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "11",
+              "name": "Aide d'élevage agricole et aquacole"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "76",
+              "name": "Charcuterie - traiteur"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "12",
+              "name": "Aquaculture"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "77",
+              "name": "Pâtisserie, confiserie, chocolaterie et glacerie"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "9",
+              "name": "Aide agricole de production fruitière ou viticole"
+            },
+            "score": 0.18181818181818182
+          },
+          {
+            "job": {
+              "id": "36",
+              "name": "Reliure et restauration de livres et archives"
+            },
+            "score": 0.18181818181818182
+          }
+        ],
+        "skill_graph": {
+          "edges": [
+            [
+              "65",
+              "65"
+            ],
+            [
+              "65",
+              "120"
+            ],
+            [
+              "65",
+              "181"
+            ],
+            [
+              "65",
+              "204"
+            ],
+            [
+              "65",
+              "322"
+            ],
+            [
+              "65",
+              "378"
+            ],
+            [
+              "120",
+              "120"
+            ],
+            [
+              "120",
+              "204"
+            ],
+            [
+              "120",
+              "322"
+            ],
+            [
+              "120",
+              "378"
+            ],
+            [
+              "125",
+              "125"
+            ],
+            [
+              "125",
+              "138"
+            ],
+            [
+              "125",
+              "174"
+            ],
+            [
+              "125",
+              "204"
+            ],
+            [
+              "125",
+              "322"
+            ],
+            [
+              "125",
+              "360"
+            ],
+            [
+              "125",
+              "377"
+            ],
+            [
+              "138",
+              "138"
+            ],
+            [
+              "138",
+              "174"
+            ],
+            [
+              "138",
+              "204"
+            ],
+            [
+              "138",
+              "322"
+            ],
+            [
+              "138",
+              "360"
+            ],
+            [
+              "138",
+              "377"
+            ],
+            [
+              "174",
+              "174"
+            ],
+            [
+              "174",
+              "204"
+            ],
+            [
+              "174",
+              "322"
+            ],
+            [
+              "174",
+              "360"
+            ],
+            [
+              "174",
+              "377"
+            ],
+            [
+              "181",
+              "181"
+            ],
+            [
+              "181",
+              "204"
+            ],
+            [
+              "204",
+              "204"
+            ],
+            [
+              "204",
+              "322"
+            ],
+            [
+              "204",
+              "360"
+            ],
+            [
+              "204",
+              "377"
+            ],
+            [
+              "204",
+              "378"
+            ],
+            [
+              "322",
+              "322"
+            ],
+            [
+              "322",
+              "360"
+            ],
+            [
+              "322",
+              "377"
+            ],
+            [
+              "322",
+              "378"
+            ],
+            [
+              "360",
+              "360"
+            ],
+            [
+              "360",
+              "377"
+            ],
+            [
+              "377",
+              "377"
+            ],
+            [
+              "378",
+              "378"
+            ]
+          ],
+          "layout": {
+            "65": [
+              0.6701821637533707,
+              0.5306513272598476
+            ],
+            "120": [
+              0.8859700915776795,
+              0.07903914960944279
+            ],
+            "125": [
+              -0.4709213818331047,
+              0.25915155708278254
+            ],
+            "138": [
+              -0.752296241080163,
+              0.04977358383469254
+            ],
+            "174": [
+              -0.7251675353277445,
+              -0.3127340784026725
+            ],
+            "181": [
+              0.12514938646707593,
+              0.9999999999999999
+            ],
+            "204": [
+              0.022315123764499713,
+              0.11616349562671069
+            ],
+            "322": [
+              0.12697354193690905,
+              -0.16792631450544798
+            ],
+            "360": [
+              -0.5017615191900031,
+              -0.5938403574409987
+            ],
+            "377": [
+              -0.149490646854869,
+              -0.5984421140477615
+            ],
+            "378": [
+              0.7690470167863495,
+              -0.36183624901659545
+            ]
+          },
+          "centrality": {
+            "65": 0.20909090909090908,
+            "120": 0.18181818181818182,
+            "125": 0.18181818181818182,
+            "138": 0.18181818181818182,
+            "174": 0.18181818181818182,
+            "181": 0.18181818181818182,
+            "204": 0.43636363636363634,
+            "322": 0.3181818181818182,
+            "360": 0.18181818181818182,
+            "377": 0.18181818181818182,
+            "378": 0.18181818181818182
+          }
+        }
+      }
+
+      oplcSkillGraphVis.skillGraphViz(
+        jobRecommendation,
+        skills,
+        "skill-graph-viz",
+        "zoom-in",
+        "zoom-out",
+      );
+    </script>
+  </body>
+</html>
