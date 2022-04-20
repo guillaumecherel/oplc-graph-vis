@@ -2,6 +2,8 @@ import * as R from 'ramda';
 import * as d3 from 'd3';
 import Sigma from 'sigma';
 import { UndirectedGraph } from 'graphology';
+import noverlap from 'graphology-layout-noverlap';
+import forceLayout from 'graphology-layout-force';
 
 type JobId = string;
 type SkillId = string;

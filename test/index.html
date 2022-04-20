@@ -7,10 +7,25 @@
   <body>
     <style>
       html,
-      body,
-      #skill-graph-viz {
+      body {
         width: 100%;
         height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #graph-grid {
+        display:flex;
+        flex-wrap: wrap;
+      }
+      .test-box {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      .graph-viz {
+        width: 20em;
+        height: 20em;
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -30,11 +45,19 @@
         border-radius: 5px;
       }
     </style>
-    <div id="skill-graph-viz">
-    </div>
     <div id="controls">
       <button id="zoom-in" type="button">+</button>
       <button id="zoom-out" type="button">-</button>
+    </div>
+    <div id="graph-grid">
+      <div class="test-box">
+        <p>All labels should appear</p>
+        <div id="skill-graph-viz" class="graph-viz"></div>
+      </div>
+      <div class="test-box">
+        <p>Distinct graphs should not overlap</p>
+        <div id="skill-graph-viz-distinct-graphs" class="graph-viz"></div>
+      </div>
     </div>
     <script src="../dist/skill-graph-vis.js"></script>
     <script>
@@ -2154,10 +2177,557 @@
         }
       }
 
+      const jobRecommendationDistinctGraphs = {
+        "scores": [
+          {
+            "job": {
+              "id": "19",
+              "name": "Élevage porcin"
+            },
+            "score": 0.5714285714285714
+          },
+          {
+            "job": {
+              "id": "18",
+              "name": "Élevage ovin ou caprin"
+            },
+            "score": 0.5714285714285714
+          },
+          {
+            "job": {
+              "id": "17",
+              "name": "Élevage de lapins et volailles"
+            },
+            "score": 0.5714285714285714
+          },
+          {
+            "job": {
+              "id": "16",
+              "name": "Élevage d'animaux sauvages ou de compagnie"
+            },
+            "score": 0.5714285714285714
+          },
+          {
+            "job": {
+              "id": "15",
+              "name": "Élevage bovin ou équin"
+            },
+            "score": 0.5714285714285714
+          },
+          {
+            "job": {
+              "id": "26",
+              "name": "Aide aux soins animaux"
+            },
+            "score": 0.2857142857142857
+          },
+          {
+            "job": {
+              "id": "10",
+              "name": "Aide agricole de production légumière ou végétale"
+            },
+            "score": 0.2857142857142857
+          },
+          {
+            "job": {
+              "id": "12",
+              "name": "Aquaculture"
+            },
+            "score": 0.2857142857142857
+          },
+          {
+            "job": {
+              "id": "24",
+              "name": "Polyculture, élevage"
+            },
+            "score": 0.23809523809523808
+          },
+          {
+            "job": {
+              "id": "6",
+              "name": "Conseil et assistance technique en agriculture"
+            },
+            "score": 0.23809523809523808
+          },
+          {
+            "job": {
+              "id": "448",
+              "name": "Thanatopraxie"
+            },
+            "score": 0.23809523809523808
+          },
+          {
+            "job": {
+              "id": "23",
+              "name": "Équipage de la pêche"
+            },
+            "score": 0.23809523809523808
+          },
+          {
+            "job": {
+              "id": "9",
+              "name": "Aide agricole de production fruitière ou viticole"
+            },
+            "score": 0.19047619047619047
+          },
+          {
+            "job": {
+              "id": "11",
+              "name": "Aide d'élevage agricole et aquacole"
+            },
+            "score": 0.19047619047619047
+          },
+          {
+            "job": {
+              "id": "13",
+              "name": "Arboriculture et viticulture"
+            },
+            "score": 0.19047619047619047
+          },
+          {
+            "job": {
+              "id": "14",
+              "name": "Encadrement équipage de la pêche"
+            },
+            "score": 0.19047619047619047
+          },
+          {
+            "job": {
+              "id": "28",
+              "name": "Toilettage des animaux"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "29",
+              "name": "Santé animale"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "90",
+              "name": "Vente en animalerie"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "455",
+              "name": "Arts du cirque et arts visuels"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "42",
+              "name": "Conservation et reconstitution d'espèces animales"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "392",
+              "name": "Services domestiques"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "27",
+              "name": "Podologie animale"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "384",
+              "name": "Encadrement technique en insertion professionnelle"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "391",
+              "name": "Assistance auprès d'enfants"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "386",
+              "name": "Information sociale"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "350",
+              "name": "Biologie médicale"
+            },
+            "score": 0.14285714285714285
+          },
+          {
+            "job": {
+              "id": "268",
+              "name": "Contrôle en industrie du cuir et du textile"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "229",
+              "name": "Inspection de conformité"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "232",
+              "name": "Management et ingénierie gestion industrielle et logistique"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "233",
+              "name": "Management et ingénierie méthodes et industrialisation"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "304",
+              "name": "Opérations manuelles d'assemblage, tri ou emballage"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "403",
+              "name": "Protection des consommateurs et contrôle des échanges commerciaux"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "301",
+              "name": "Réglage d'équipement de formage des plastiques et caoutchoucs"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "300",
+              "name": "Conduite d'équipement de formage des plastiques et caoutchoucs"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "269",
+              "name": "Encadrement de production de matériel électrique et électronique"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "299",
+              "name": "Conduite d'installation de pâte à papier"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "298",
+              "name": "Conduite d'équipement de fabrication de papier ou de carton"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "273",
+              "name": "Encadrement d'équipe ou d'atelier en matériaux souples"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "109",
+              "name": "Marchandisage"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "140",
+              "name": "Conduite de machines de façonnage routage"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "139",
+              "name": "Conduite de machines d'impression"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "89",
+              "name": "Vente de végétaux"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "270",
+              "name": "Management et ingénierie de production"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "91",
+              "name": "Vente en articles de sport et loisirs"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "92",
+              "name": "Vente en décoration et équipement du foyer"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "93",
+              "name": "Vente en gros de matériel et équipement"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "94",
+              "name": "Vente en habillement et accessoires de la personne"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "438",
+              "name": "Revalorisation de produits industriels"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "272",
+              "name": "Encadrement d'équipe en industrie de transformation"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "110",
+              "name": "Mise en rayon libre-service"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "142",
+              "name": "Façonnage et routage"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "0",
+              "name": "Conduite d'engins agricoles et forestiers"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "20",
+              "name": "Fabrication et affinage de fromages"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "205",
+              "name": "Management du personnel de cuisine"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "209",
+              "name": "Plonge en restauration"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "214",
+              "name": "Management du service en restauration"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "5",
+              "name": "Sylviculteur / Sylvicultrice"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "202",
+              "name": "Personnel d'étage"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "344",
+              "name": "Réparation de carrosserie"
+            },
+            "score": 0.09523809523809523
+          },
+          {
+            "job": {
+              "id": "216",
+              "name": "Sommellerie"
+            },
+            "score": 0.09523809523809523
+          }
+        ],
+        "skill_graph": {
+          "edges": [
+            [
+              "54",
+              "54"
+            ],
+            [
+              "54",
+              "203"
+            ],
+            [
+              "54",
+              "208"
+            ],
+            [
+              "54",
+              "406"
+            ],
+            [
+              "176",
+              "176"
+            ],
+            [
+              "176",
+              "332"
+            ],
+            [
+              "176",
+              "360"
+            ],
+            [
+              "203",
+              "203"
+            ],
+            [
+              "203",
+              "208"
+            ],
+            [
+              "203",
+              "406"
+            ],
+            [
+              "208",
+              "208"
+            ],
+            [
+              "208",
+              "406"
+            ],
+            [
+              "332",
+              "332"
+            ],
+            [
+              "332",
+              "360"
+            ],
+            [
+              "360",
+              "360"
+            ],
+            [
+              "406",
+              "406"
+            ]
+          ],
+          "layout": {
+            "54": [
+              0.9580377863906283,
+              0.2965213296185912
+            ],
+            "176": [
+              0.25552409142589577,
+              0.32041704932995285
+            ],
+            "203": [
+              0.07590357856652477,
+              1
+            ],
+            "208": [
+              -0.6275565095413146,
+              0.11786861828247246
+            ],
+            "332": [
+              -0.974966053070087,
+              -0.16252583159626524
+            ],
+            "360": [
+              0.058499369892184176,
+              -0.9866870327174957
+            ],
+            "406": [
+              0.2545577363361685,
+              -0.5855941329172555
+            ]
+          },
+          "centrality": {
+            "54": 0.14285714285714285,
+            "176": 0.09523809523809523,
+            "203": 0.14285714285714285,
+            "208": 0.14285714285714285,
+            "332": 0.09523809523809523,
+            "360": 0.09523809523809523,
+            "406": 0.14285714285714285
+          }
+        }
+      }
+
       oplcSkillGraphVis.skillGraphViz(
         jobRecommendation,
         skills,
         "skill-graph-viz",
+        "zoom-in",
+        "zoom-out",
+      );
+
+      oplcSkillGraphVis.skillGraphViz(
+        jobRecommendationDistinctGraphs,
+        skills,
+        "skill-graph-viz-distinct-graphs",
         "zoom-in",
         "zoom-out",
       );
