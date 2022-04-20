@@ -1,6 +1,6 @@
 {
   "name": "oplc-graph-vis",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A skill graph visualization element for Diagoriente users",
   "main": "dist/skill-graph-vis.js",
   "types": "dist/skill-graph-viz.d.ts",
